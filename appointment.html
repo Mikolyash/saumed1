@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/png" href="file:///C:/Users/Амина/Desktop/favi.png">
+<title>Appointment</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="CareMed demo project">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
+<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
+<link rel="stylesheet" type="text/css" href="styles/services.css">
+<link rel="stylesheet" type="text/css" href="styles/services_responsive.css">
+<style>
+/* CSS styles */
+.form_container {
+    width: 50%;
+    margin: 0 auto;
+    padding: 50px;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+}
+
+.form_title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #272727;
+}
+
+.form_group {
+    margin-bottom: 20px;
+}
+
+.form_label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #272727;
+    margin-bottom: 10px;
+}
+
+.form_control {
+    width: 100%;
+    height: 40px;
+    padding: 10px;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+    font-size: 16px;
+}
+
+.form_submit {
+    width: 100%;
+    height: 40px;
+    background-color: #20d34a;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 3px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.form_submit:hover {
+    background-color: #1a9e37;
+}
+
+/* Notification styles */
+.notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #20d34a;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    z-index: 9999;
+    display: none;
+}
+</style>
+</head>
+<body>
+    <div class="super_container">
+	
+        <!-- Header -->
+      
+<div class="form_container">
+    <h2 class="form_title">Appointment Request Form</h2>
+    <form id="appointment_form" action="#" method="post">
+        <div class="form_group">
+            <label for="name" class="form_label">Your Name:</label>
+            <input type="text" id="name" name="name" class="form_control" required>
+        </div>
+        <div class="form_group">
+            <label for="email" class="form_label">Email Address:</label>
+            <input type="email" id="email" name="email" class="form_control" required>
+        </div>
+        <div class="form_group">
+            <label for="phone" class="form_label">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" class="form_control" required>
+        </div>
+        <div class="form_group">
+            <label for="date" class="form_label">Preferred Date:</label>
+            <input type="date" id="date" name="date" class="form_control" required>
+        </div>
+        <div class="form_group">
+            <label for="service" class="form_label">Service:</label>
+            <select id="service" name="service" class="form_control" required>
+                <option value="" disabled selected>Select a service</option>
+                <option value="Service 1">Pediatrics</option>
+                <option value="Service 2">Otolaryngolagy</option>
+                <option value="Service 3">Gynecology</option>
+                <option value="Service 1">Urology</option>
+                <option value="Service 2">Proctology</option>
+                <option value="Service 3">Cardiology</option>
+                <option value="Service 3">Endocrinology</option>
+                <option value="Service 2">Gastroenterology</option>
+                <option value="Service 3">Allergology</option>
+                <option value="Service 3">Ophthalmology</option>
+            </select>
+        </div>
+        <div class="form_group">
+            <label for="message" class="form_label">Message:</label>
+            <textarea id="message" name="message" class="form_control" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="form_submit">Submit</button>
+    </form>
+</div>
+ <!-- Модальное окно -->
+ <div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Form submitted successfully!</p>
+    </div>
+</div>
+
+<audio id="submitSound">
+    <source src="C:\Users\Амина\Downloads\Voicy_Facebook notification 2 sound effect.mp3" type="audio/mpeg">
+    
+</audio>
+</div>
+<script>
+// Функция для показа модального окна
+function showModal() {
+    var modal = document.getElementById('myModal');
+    modal.style.display = 'block'; // Показываем модальное окно
+}
+
+// Функция для скрытия модального окна
+function hideModal() {
+    var modal = document.getElementById('myModal');
+    modal.style.display = 'none'; // Скрываем модальное окно
+}
+
+// Функция для прокрутки страницы к форме
+function scrollToAppointment() {
+    var appointmentForm = document.getElementById('appointment_form');
+    appointmentForm.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Обработчик события отправки формы
+document.addEventListener('DOMContentLoaded', function() {
+    var form = document.getElementById('appointment_form');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        showModal(); // Показываем модальное окно
+
+        scrollToAppointment(); // Прокручиваем к форме
+    });
+});
+
+// Обработчик события закрытия модального окна
+document.addEventListener('click', function(event) {
+    var modal = document.getElementById('myModal');
+    var closeBtn = document.getElementsByClassName('close')[0];
+
+    if (event.target == modal || event.target == closeBtn) {
+        hideModal(); // Скрываем модальное окно при клике вне его или на кнопку закрытия
+    }
+});
+// Обработчик события отправки формы
+document.addEventListener('DOMContentLoaded', function() {
+    var form = document.getElementById('appointment_form');
+    var submitSound = document.getElementById('submitSound');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        showModal(); // Показываем модальное окно
+
+        scrollToAppointment(); // Прокручиваем к форме
+        
+        // Play the sound
+        submitSound.play();
+    });
+});
+
+</script>
+</body>
